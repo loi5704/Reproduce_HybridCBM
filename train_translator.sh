@@ -16,6 +16,6 @@ CUDA_VISIBLE_DEVICES=0,1 torchrun \
     --out_dir /kaggle/working/weights/translator-AddData \
     --epochs 100 \
     --save_every 2 \
-    --batch_size 512 \
+    --batch_size 256 \
     --clip_model ViT-L/14 \
     --augment
