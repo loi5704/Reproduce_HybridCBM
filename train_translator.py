@@ -323,7 +323,7 @@ def train_translator(dataset, args, clip_name="ViT-B/32",
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--out_dir', default='./weights/translators', help='output directory')
+    parser.add_argument('--out_dir', default='/kaggle/working/weights/translators', help='output directory')
     parser.add_argument('--clip_model', default='ViT-L/14', help='clip model name')
     parser.add_argument('--output_prefix', default='translators', help='prefix for saved filenames')
     parser.add_argument('--augment', default=False, action='store_true')
@@ -333,7 +333,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     args.local_rank = int(os.environ['LOCAL_RANK'])
 
-    dataset = MergeDataset(f"./datasets/ConceptTranslator/ConceptBank_{args.clip_model.replace('/', '_')}.pkl",
-                           f"./datasets/COCO/COCO_{args.clip_model.replace('/', '_')}_train.pkl")
+    dataset = MergeDataset(f"/kaggle/input/datasets/loinguyen57/data-for-translator/ConceptBank_{args.clip_model.replace('/', '_')}.pkl",
+                           f"/kaggle/input/datasets/loinguyen57/data-for-translator/COCO_{args.clip_model.replace('/', '_')}_train.pkl")
     train_translator(dataset, args, clip_name=args.clip_model, output_dir=args.out_dir,
                      output_prefix=args.output_prefix)
