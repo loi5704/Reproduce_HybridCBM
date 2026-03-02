@@ -226,7 +226,7 @@ def train_translator(dataset, args, clip_name="ViT-B/32",
     clip_model, preprocess = clip.load(clip_name, device=device, jit=False)
     clip_model.eval()
 
-    model = ConceptTranslator(prefix_size=clip_model.visual.output_dim)
+    model = ConceptTranslator(clip_model='ViT-L/14',prefix_size=clip_model.visual.output_dim)
     loss_ce = torch.nn.CrossEntropyLoss(ignore_index=0, label_smoothing=0.1)
     checkpoints = glob.glob(os.path.join(save_dir, '*.pt'))
     if not checkpoints:
