@@ -253,7 +253,7 @@ def train_translator(dataset, args, clip_name="ViT-B/32",
 
     optimizer = AdamW(model.parameters(), lr=lr)
     sampler = DistributedSampler(dataset)
-    train_dataloader = DataLoader(dataset, sampler=sampler, batch_size=batch_size, drop_last=True)
+    train_dataloader = DataLoader(dataset, sampler=sampler, batch_size=batch_size, drop_last=True, num_workers=4)
 
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=warmup_steps, num_training_steps=epochs * len(train_dataloader)

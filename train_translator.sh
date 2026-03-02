@@ -15,7 +15,7 @@ CUDA_VISIBLE_DEVICES=0,1 torchrun \
     train_translator.py \
     --out_dir /kaggle/working/weights/translator-AddData \
     --epochs 100 \
-    --save_every 20 \
-    --batch_size 64 \
+    --save_every 2 \
+    --batch_size 512 \
     --clip_model ViT-L/14 \
     --augment
