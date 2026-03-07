@@ -3,7 +3,7 @@ export CUDA_VISIBLE_DEVICES=0
 
 python train_HybridCBM.py \
     --dataset HAM10000 \
-    --data_root /kaggle/input/datasets/loinguyen57/ham10000-merge/ham10000_images \
+    --data_root /kaggle/input/datasets/loinguyen57/data-for-translator/HAM10000/HAM10000 \
     --exp_root /kaggle/working/experiments/HAM10000_run_1 \
     --device cuda:0 \
     --clip_model ViT-L/14 \
