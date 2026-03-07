@@ -16,7 +16,7 @@ python train_HybridCBM.py \
     --num_static_concept 70 \
     --num_dynamic_concept 70 \
     --concept_select_fn submodular \
-    --submodular_weights 1e7 0.1\
+    --submodular_weights 1.0 0.1\
     \
     --batch_size 128 \
     --num_workers 4 \

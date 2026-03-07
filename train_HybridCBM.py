@@ -153,7 +153,7 @@ def train(args, ModelClass, captions=None):
 
     ckpt_path = load_checkpoint(args, force_last=True)
     if ckpt_path:
-        model.load_state_dict(torch.load(ckpt_path, map_location=device, weights_only=True))
+        model.load_state_dict(torch.load(ckpt_path, map_location=device, weights_only=True), strict=False)
         logger.info(f"Đã khôi phục trọng số từ: {ckpt_path}")
 
     model.to(device)
@@ -247,7 +247,7 @@ def test(args, ModelClass, captions=None): # ĐÃ SỬA: Thêm tham số truyề
     
     model = ModelClass(args, conceptbank=concept_bank)
     if ckpt_path:
-        model.load_state_dict(torch.load(ckpt_path, map_location=device, weights_only=True))
+        model.load_state_dict(torch.load(ckpt_path, map_location=device, weights_only=True), strict=False)
         
     model.to(device)
     model.eval()
