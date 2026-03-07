@@ -13,8 +13,8 @@ python train_HybridCBM.py \
     --train_mode joint \
     --scale 0.1 \
     --num_class 7 \
-    --num_static_concept 50 \
-    --num_dynamic_concept 50 \
+    --num_static_concept 70 \
+    --num_dynamic_concept 70 \
     --concept_select_fn submodular \
     --submodular_weights 1e7 0.1\
     \
