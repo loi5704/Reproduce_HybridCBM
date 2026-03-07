@@ -21,7 +21,7 @@ python train_HybridCBM.py \
     --batch_size 128 \
     --num_workers 4 \
     --use_img_features \
-    --max_epochs 1 \
+    --max_epochs 1000 \
     --lr 0.001 \
     --concept_lr 0.001 \
     --n_shots all \
