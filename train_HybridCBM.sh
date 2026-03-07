@@ -12,7 +12,6 @@ python train_HybridCBM.py \
     --weight_init_method rand \
     --train_mode joint \
     --scale 0.1 \
-    --use_normalize False \
     --num_class 7 \
     --num_static_concept 50 \
     --num_dynamic_concept 50 \
@@ -21,9 +20,7 @@ python train_HybridCBM.py \
     \
     --batch_size 128 \
     --num_workers 4 \
-    --pin_memory False \
-    --use_img_features True \
-    --force_compute False \
+    --use_img_features \
     --max_epochs 1 \
     --lr 0.001 \
     --concept_lr 0.001 \
