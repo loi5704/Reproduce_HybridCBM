@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
+from pathlib import Path
 
 from datasets import get_datamodule_fromconfig
 from models.conceptBank import get_concept_bank_fromconfig
@@ -73,6 +74,8 @@ def get_args():
                         help='Mảng trọng số cho thuật toán submodular')
 
     args = parser.parse_args()
+    args.exp_root = Path(args.exp_root)
+    args.data_root = Path(args.data_root)
     os.makedirs(args.exp_root, exist_ok=True)
     return args
 
