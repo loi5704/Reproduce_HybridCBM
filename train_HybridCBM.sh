@@ -24,7 +24,7 @@ python train_HybridCBM.py \
     --pin_memory False \
     --use_img_features True \
     --force_compute False \
-    --max_epochs 50 \
+    --max_epochs 1 \
     --lr 0.001 \
     --concept_lr 0.001 \
     --n_shots all \
