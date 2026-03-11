@@ -11,7 +11,7 @@ python train_HybridCBM.py \
     \
     --weight_init_method rand \
     --train_mode joint \
-    --scale 0.1 \
+    --scale 0.2 \
     --num_class 7 \
     --num_static_concept 70 \
     --num_dynamic_concept 70 \
@@ -31,5 +31,5 @@ python train_HybridCBM.py \
     --lambda_discri 1.0 \
     --lambda_discri_alpha 0.5 \
     --lambda_discri_beta 0.5 \
-    --lambda_ort 0.1 \
+    --lambda_ort 0.5 \
     --lambda_align 0.01

@@ -21,7 +21,6 @@ python train_HybridCBM.py \
     --batch_size 256 \
     --num_workers 4 \
     --use_img_features \
-    --use_normalize \
     --max_epochs 1000 \
     --lr 0.001 \
     --concept_lr 0.001 \
@@ -31,5 +30,5 @@ python train_HybridCBM.py \
     --lambda_discri 1.0 \
     --lambda_discri_alpha 0.5 \
     --lambda_discri_beta 0.5 \
-    --lambda_ort 0.1 \
+    --lambda_ort 0.5 \
     --lambda_align 0.01

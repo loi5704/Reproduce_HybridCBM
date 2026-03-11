@@ -13,6 +13,7 @@ from datasets import get_datamodule_fromconfig
 from models.conceptBank import get_concept_bank_fromconfig
 from utils.utils import config_logging
 from models.cbms import LinearCBM  # Đã import sẵn ModelClass ở đây
+from sklearn.metrics import accuracy_score, balanced_accuracy_score
 
 
 def get_args():
@@ -173,7 +174,7 @@ def train(args, ModelClass, captions=None):
 
     check_interval = 5 if (args.dataset == "ImageNet" and args.n_shots == "all") else 10
     global_step = 0
-    best_val_acc = 0.0
+    best_val_bma = 0.0
 
     logger.info("BẮT ĐẦU HUẤN LUYỆN...")
     for epoch in range(args.max_epochs):
@@ -215,22 +216,31 @@ def train(args, ModelClass, captions=None):
         # VALIDATION PHASE
         if epoch % check_interval == 0 or epoch == args.max_epochs - 1:
             model.eval()
-            correct, total = 0, 0
+            
+            all_val_preds = []
+            all_val_labels = []
+
             with torch.no_grad():
                 for batch in val_loader:
                     images, labels = batch[0].to(device), batch[1].to(device)
                     outputs = model(images)
                     _, predicted = torch.max(outputs.data, 1)
-                    total += labels.size(0)
-                    correct += (predicted == labels).sum().item()
                     
-            val_acc = correct / total
-            tb_logger.add_scalar('Accuracy/Validation', val_acc, epoch)
-            logger.info(f"Epoch {epoch} | Val Acc: {val_acc:.4f}")
+                    all_val_preds.extend(predicted.cpu().numpy())
+                    all_val_labels.extend(labels.cpu().numpy())
+                    
+            val_acc = accuracy_score(all_val_labels, all_val_preds)
+            val_bma = balanced_accuracy_score(all_val_labels, all_val_preds)
             
-            save_checkpoint(model, args, epoch, global_step, val_acc)
-            if val_acc > best_val_acc:
-                best_val_acc = val_acc
+            tb_logger.add_scalar('Accuracy/Validation', val_acc, epoch)
+            tb_logger.add_scalar('BMA/Validation', val_bma, epoch) # Ghi BMA vào TensorBoard
+            
+            logger.info(f"Epoch {epoch} | Val Acc: {val_acc:.4f} | Val BMA: {val_bma:.4f}")
+            
+            # ĐÃ SỬA: Truyền val_bma vào để hệ thống đánh giá lưu model
+            save_checkpoint(model, args, epoch, global_step, val_bma) 
+            if val_bma > best_val_bma:
+                best_val_bma = val_bma
 
     tb_logger.close()
 
@@ -255,17 +265,23 @@ def test(args, ModelClass, captions=None): # ĐÃ SỬA: Thêm tham số truyề
     if hasattr(datamodule, 'setup'): datamodule.setup(stage='test')
     test_loader = datamodule.test_dataloader()
     
-    correct, total = 0, 0
+    all_preds = []
+    all_labels = []
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Testing"):
             images, labels = batch[0].to(device), batch[1].to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
             
-    test_acc = 100 * correct / total
-    logger.info(f'Kết quả Test Accuracy cuối cùng: {test_acc:.2f}%')
+            # Đưa dữ liệu từ GPU về CPU và lưu vào mảng
+            all_preds.extend(predicted.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
+            
+    test_acc = accuracy_score(all_labels, all_preds) * 100
+    test_bma = balanced_accuracy_score(all_labels, all_preds) * 100
+    
+    logger.info(f'Kết quả Standard Accuracy: {test_acc:.2f}%')
+    logger.info(f'Kết quả Balanced Mean Accuracy (BMA): {test_bma:.2f}%')
     
     # ĐÃ SỬA: GỌI HÀM EXPLAINABLE AI SAU KHI TEST XONG
     if hasattr(model, 'save_topk_concepts_for_class'):
