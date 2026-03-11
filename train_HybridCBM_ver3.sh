@@ -30,5 +30,5 @@ python train_HybridCBM.py \
     --lambda_discri 1.0 \
     --lambda_discri_alpha 0.5 \
     --lambda_discri_beta 0.5 \
-    --lambda_ort 0.5 \
+    --lambda_ort 0.1 \
     --lambda_align 0.01
